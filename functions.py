@@ -96,9 +96,10 @@ def unique_vals(df):
         # return the dataframe 
         return boldify(unique_vals_df)
 
-'''def classify_results(df):
-    df = df.assign(result_class=False)
-    df.loc[(df['result'] == 'Pass') | (df['result'] == 'Distinction'), 'result_class'] = True'''
+def classify_scores(df, score_dict, score_column, column_name):
+    df = df.assign(column_name=0)
+    df[column_name] = [k for k, v in score_dict.items() if df[score_column] in v]
+        
 
 # a function to change dataframe column values based on a given dictionary
 def change_col_val(val_dict, df):

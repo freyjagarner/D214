@@ -114,10 +114,10 @@ def change_col_val(val_dict, df):
 def percentage(part, whole):
     return round(100 * float(part) / float(whole), 2)
 
-from sklearn.feature_selection import SelectKBest, mutual_info_regression
+from sklearn.feature_selection import SelectKBest, f_classif, mutual_info_classif, f_regression, chi2
 def get_kbest(x_train, y_train):
-    selector = SelectKBest(mutual_info_regression, k='all')
-    X_train_new = selector.fit_transform(x_train, y_train) 
+    selector = SelectKBest(f_classif, k='all')
+    X_train_new = selector.fit_transform(x_train, y_train.values.ravel()) 
     mask = selector.get_support()    
     new_features = x_train.columns[mask]
-    return(dataframe(sorted(zip(selector.scores_, new_features), reverse=True)))
+    return(pd.DataFrame(sorted(zip(selector.pvalues_, new_features)), columns=['P-Value', 'Variable']))

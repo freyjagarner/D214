@@ -121,3 +121,15 @@ def get_kbest(x_train, y_train):
     mask = selector.get_support()    
     new_features = x_train.columns[mask]
     return(pd.DataFrame(sorted(zip(selector.pvalues_, new_features)), columns=['P-Value', 'Variable']))
+
+
+from sklearn.model_selection import cross_val_score
+# function to make dataframe of cross validations
+def get_cross_val(clf, X, y):
+    # fit data/classifier to 10 cross validations
+    cross_val = cross_val_score(clf, X, y, cv=10)
+    # sort scores in descending order
+    sorted_cross_vals = sorted([i for i in cross_val], reverse=True)
+    # make df and name column to match contents
+    cv_df = dataframe(sorted_cross_vals).rename(columns={0:'cross_val_score'})
+    return cv_df
